@@ -151,6 +151,14 @@ class VideoViewController: ItemBaseController<VideoView> {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 
+        if let playerItem = object as? AVPlayer,
+           let item = playerItem.currentItem {
+            if let error = item.error as NSError? {
+                player.replaceCurrentItem(with: AVPlayerItem(url: videoURL))
+                player.play()
+            }
+        }
+      
         if keyPath == "rate" || keyPath == "status" {
 
             fadeOutEmbeddedPlayButton()
